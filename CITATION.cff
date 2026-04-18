@@ -18,6 +18,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.19643792"
     description: "Concept DOI (all versions)"
+  - type: doi
+    value: "10.5281/zenodo.19645441"
+    description: "Version 2.0.0"
 keywords:
   - Wagstaff numbers
   - primality testing
