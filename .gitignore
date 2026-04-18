@@ -1,0 +1,23 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# LaTeX build artifacts (scoped to paper/ so the logs/ dir is untouched).
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.pdf
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.toc
+paper/*.bbl
+paper/*.blg
+paper/*.nav
+paper/*.snm
+paper/*.vrb
+
+# Editor junk
+*~
+.DS_Store
+.vscode/

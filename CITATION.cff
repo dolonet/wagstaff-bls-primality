@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software or the certificates it produces in your
+  research, please cite the accompanying paper and this repository.
+type: software
+title: >-
+  wagstaff-bls-primality: Brillhart-Lehmer-Selfridge primality
+  certificates for W_2617, W_10501, and W_12391
+authors:
+  - family-names: Dolotov
+    given-names: Alexey
+    email: science@dolotov.com
+date-released: "2026-04-18"
+license: MIT
+repository-code: "https://github.com/dolonet/wagstaff-bls-primality"
+keywords:
+  - Wagstaff numbers
+  - primality testing
+  - Brillhart-Lehmer-Selfridge
+  - APR-CL
+  - cyclotomic decomposition
+preferred-citation:
+  type: article
+  title: >-
+    Three Brillhart-Lehmer-Selfridge primality proofs for Wagstaff
+    numbers
+  authors:
+    - family-names: Dolotov
+      given-names: Alexey
+      email: science@dolotov.com
+  year: 2026

@@ -1,0 +1,153 @@
+W_2617 has 788 digits
+N mod 8 = 3
+N-1 = (2^2617 - 2) / 3
+N+1 = 4 * W_2615
+
+============================================================
+Step 0a: Chua's Condition (II): omega_3^((N+1)/2) ≡ -1 (mod N)
+============================================================
+  exponent bits:  2615
+  elapsed:        0.16s
+  residual a = 0: True
+  residual b = 0: True
+  Condition (II) verified: True
+
+============================================================
+Step 1: Cyclotomic decomposition of 2^2616 - 1
+============================================================
+Divisors of 2616: [1, 2, 3, 4, 6, 8, 12, 24, 109, 218, 327, 436, 654, 872, 1308, 2616]
+Number of divisors: 16
+Cyclotomic product verified: prod Phi_d(2) = 2^2616 - 1
+  Phi_1(2): phi(1) = 1, 1 digits
+  Phi_2(2): phi(2) = 1, 1 digits
+  Phi_3(2): phi(3) = 2, 1 digits
+  Phi_4(2): phi(4) = 2, 1 digits
+  Phi_6(2): phi(6) = 2, 1 digits
+  Phi_8(2): phi(8) = 4, 2 digits
+  Phi_12(2): phi(12) = 4, 2 digits
+  Phi_24(2): phi(24) = 8, 3 digits
+  Phi_109(2): phi(109) = 108, 33 digits
+  Phi_218(2): phi(218) = 108, 33 digits
+  Phi_327(2): phi(327) = 216, 65 digits
+  Phi_436(2): phi(436) = 216, 65 digits
+  Phi_654(2): phi(654) = 216, 66 digits
+  Phi_872(2): phi(872) = 432, 131 digits
+  Phi_1308(2): phi(1308) = 432, 131 digits
+  Phi_2616(2): phi(2616) = 864, 261 digits
+
+============================================================
+Step 2: Factoring cyclotomic values (d <= 654)
+============================================================
+  Phi_1(2) = 1 -- trivial
+  Phi_2(2) = 3 = 3  [0.0s]
+  Phi_3(2) = 7 = 7  [0.0s]
+  Phi_4(2) = 5 = 5  [0.0s]
+  Phi_6(2) = 3 = 3  [0.0s]
+  Phi_8(2) = 17 = 17  [0.0s]
+  Phi_12(2) = 13 = 13  [0.0s]
+  Phi_24(2) = 241 = 241  [0.0s]
+  Phi_109(2) (33 digits) = 745988807 * 870035986098720987332873  [0.2s]
+  Phi_218(2) (33 digits) = 104124649 * 2077756847362348863128179  [0.0s]
+  Phi_327(2) = 20597276734348736647 * 33157029794959983067039 * 88116165754061081804047  [verified]
+  Phi_436(2) = 5669 * 666184021 * 74323515777853 * 1746518852140345553 * 171857646012809566969  [verified]
+  Phi_654(2) = 666427 * 6927735019 * 30414028470765822165976581508161866432602988327347  [verified]
+  Phi_872(2): 131 digits -- SKIPPED (not needed)
+  Phi_1308(2): 131 digits -- SKIPPED (not needed)
+  Phi_2616(2): 261 digits -- SKIPPED (not needed)
+
+============================================================
+Step 3: Computing factored part F of N-1
+============================================================
+Total distinct primes in factored part: 22
+
+============================================================
+Step 3a: APR-CL primality proof for 22 primes of F
+============================================================
+APR-CL certifying 22 primes (PARI/GP /usr/bin/gp)
+  q (  1d): APR-CL PRIME  [  0.005s]
+  q (  1d): APR-CL PRIME  [  0.005s]
+  q (  1d): APR-CL PRIME  [  0.004s]
+  q (  1d): APR-CL PRIME  [  0.004s]
+  q (  2d): APR-CL PRIME  [  0.006s]
+  q (  2d): APR-CL PRIME  [  0.005s]
+  q (  3d): APR-CL PRIME  [  0.006s]
+  q (  4d): APR-CL PRIME  [  0.005s]
+  q (  6d): APR-CL PRIME  [  0.006s]
+  q (  9d): APR-CL PRIME  [  0.006s]
+  q (  9d): APR-CL PRIME  [  0.006s]
+  q (  9d): APR-CL PRIME  [  0.006s]
+  q ( 10d): APR-CL PRIME  [  0.005s]
+  q ( 14d): APR-CL PRIME  [  0.006s]
+  q ( 19d): APR-CL PRIME  [  0.006s]
+  q ( 20d): APR-CL PRIME  [  0.006s]
+  q ( 21d): APR-CL PRIME  [  0.006s]
+  q ( 23d): APR-CL PRIME  [  0.006s]
+  q ( 23d): APR-CL PRIME  [  0.007s]
+  q ( 24d): APR-CL PRIME  [  0.007s]
+  q ( 25d): APR-CL PRIME  [  0.007s]
+  q ( 50d): APR-CL PRIME  [  0.009s]
+All 22 factors certified by APR-CL.  Total: 0.13s
+
+F has 268 digits (888 bits)
+N has 788 digits (2616 bits)
+2*F^3 has 2663 bits
+Exact margin: (2*F^3).bit_length() - N.bit_length() = 47 bits
+
+*** BLS Theorem 5 CHECK: 2*F^3 > N  ==>  PASSED  (margin 47 bits) ***
+
+============================================================
+Step 4: BLS witnesses for each prime q | F
+============================================================
+Need witnesses for 22 primes
+  q = 2: witness a = 2
+  q = 3: witness a = 3
+  q = 5: witness a = 3
+  q = 7: witness a = 3
+  q = 13: witness a = 3
+  q = 17: witness a = 3
+  q = 241: witness a = 3
+  q = 5669: witness a = 3
+  q = 666427: witness a = 3
+  q = 104124649: witness a = 3
+  q = 666184021: witness a = 3
+  q = 745988807: witness a = 3
+  q = 6927735019: witness a = 3
+  q = 74323515777853: witness a = 3
+  q = 1746518852140345553 (19 digits): witness a = 3
+  q = 20597276734348736647 (20 digits): witness a = 3
+  q = 171857646012809566969 (21 digits): witness a = 3
+  q = 33157029794959983067039 (23 digits): witness a = 3
+  q = 88116165754061081804047 (23 digits): witness a = 3
+  q = 870035986098720987332873 (24 digits): witness a = 3
+  q = 2077756847362348863128179 (25 digits): witness a = 3
+  q = 30414028470765822165976581508161866432602988327347 (50 digits): witness a = 3
+
+*** ALL 22 PRIMES HAVE WITNESSES ***
+
+============================================================
+Step 5: BLS Theorem 5 — finite divisor check
+============================================================
+Max k to check: ~47288129528163959677101304344752309642337483613208604930761547227136551594814625843699155685117902283337478263896312498823854236681305 (this is a 134-digit number)
+But kF+1 must divide N, so we only check k where N mod (kF+1) == 0
+R = (N-1)/F has 521 digits
+
+If N is composite with all prime factors ≡ 1 (mod F):
+  c1 + c2 = (267 digits)
+  c1 * c2 = (254 digits)
+  Discriminant = (c1+c2)^2 - 4*c1*c2
+  Discriminant is NOT a perfect square
+
+*** N = W_2617 IS PROVEN PRIME by BLS Theorem 5 ***
+
+============================================================
+Step 6: Generating JSON certificate
+============================================================
+Certificate written to /home/alexey/claude/primes/papers/wagstaff_bls_primality/release/data/bls_certificate_w2617.json
+  Result: PRIME
+  Factored part: 888 bits (268 digits), 22 primes
+  Exact margin: 47 bits ((2*F^3).bit_length() - N.bit_length())
+  Discriminant: non-square
+
+============================================================
+DONE
+============================================================

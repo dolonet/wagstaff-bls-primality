@@ -1,0 +1,36 @@
+{
+  "title": "Three Brillhart-Lehmer-Selfridge primality proofs for Wagstaff numbers",
+  "description": "<p>BLS N-1 primality certificates for the Wagstaff numbers W_2617 (788 digits), W_10501 (3161 digits), and W_12391 (3730 digits), together with the drivers that produced them and an independent re-verifier.</p><p>All cofactors of N-1 are certified by APR-CL (PARI/GP <code>isprime(x, 2)</code>). As an independent sanity check, the Chua congruence <code>omega_3^((N+1)/2) = -1 (mod N)</code> is verified at each W_p in Z[sqrt 2] / (N). The method does not depend on the Chebyshev sufficiency conjecture.</p><p>Contents: <code>paper/</code> manuscript sources (LaTeX); <code>scripts/</code> primality drivers and <code>verify_bls.py</code>; <code>data/</code> JSON certificates; <code>logs/</code> full stdout of the cluster runs that produced the two larger certificates.</p><p>Code and certificates are released under MIT; the manuscript under <code>paper/</code> is released under CC-BY-4.0 (see <code>LICENSE-PAPER</code>).</p>",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Dolotov, Alexey"
+    }
+  ],
+  "keywords": [
+    "Wagstaff numbers",
+    "primality testing",
+    "Brillhart-Lehmer-Selfridge",
+    "BLS N-1",
+    "APR-CL",
+    "cyclotomic decomposition",
+    "Chua congruence",
+    "Chebyshev polynomials",
+    "Pell sequences",
+    "number theory"
+  ],
+  "communities": [
+    {
+      "identifier": "zenodo"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/dolonet/wagstaff-bls-primality",
+      "relation": "isDerivedFrom",
+      "resource_type": "software"
+    }
+  ]
+}
