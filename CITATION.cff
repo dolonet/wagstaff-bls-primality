@@ -10,6 +10,7 @@ authors:
   - family-names: Dolotov
     given-names: Alexey
     email: science@dolotov.com
+    orcid: "https://orcid.org/0009-0003-9481-5808"
 date-released: "2026-04-18"
 license: MIT
 repository-code: "https://github.com/dolonet/wagstaff-bls-primality"
@@ -28,4 +29,5 @@ preferred-citation:
     - family-names: Dolotov
       given-names: Alexey
       email: science@dolotov.com
+      orcid: "https://orcid.org/0009-0003-9481-5808"
   year: 2026
