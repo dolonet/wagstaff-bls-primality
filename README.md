@@ -1,5 +1,7 @@
 # wagstaff-bls-primality
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19643792.svg)](https://doi.org/10.5281/zenodo.19643792)
+
 Unconditional primality proofs of the Wagstaff numbers
 $W_{2617}$, $W_{10501}$, and $W_{12391}$ via the Brillhart–Lehmer–Selfridge
 $N-1$ criterion, independent of ECPP.
@@ -67,7 +69,7 @@ and exits 0. Any disagreement exits non-zero.
 See `CITATION.cff`, or cite as:
 
 > Dolotov, A. *Three Brillhart–Lehmer–Selfridge primality proofs for
-> Wagstaff numbers.* 2026. arXiv: …
+> Wagstaff numbers.* 2026. Zenodo. <https://doi.org/10.5281/zenodo.19643792>
 
 ## References
 
