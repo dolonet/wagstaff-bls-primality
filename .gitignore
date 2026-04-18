@@ -7,7 +7,7 @@ paper/*.aux
 paper/*.log
 paper/*.out
 paper/*.pdf
-!paper/wagstaff_bls_primality_v1.5.pdf
+!paper/wagstaff_bls_primality.pdf
 paper/*.synctex.gz
 paper/*.fls
 paper/*.fdb_latexmk
@@ -17,6 +17,10 @@ paper/*.blg
 paper/*.nav
 paper/*.snm
 paper/*.vrb
+
+# Driver-side scratch copy of run logs. The canonical tracked location
+# is logs/; drivers also write next to the JSON in data/ as a byproduct.
+data/*.log
 
 # Editor junk
 *~

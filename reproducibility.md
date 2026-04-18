@@ -37,7 +37,7 @@ Each driver `bls_n_minus_1_wXXXX.py`:
 4. APR-CL certifies every prime $q$ of the factored part $F$ of
    $N - 1$ via PARI/GP `isprime(x, 2)` — APR-CL only, no BPSW
    fallback, no size threshold.
-5. Checks the BLS Theorem 5 hypothesis $2 F^3 > N$ with exact integer
+5. Checks the BLS Theorem 5 hypothesis $F^3 > N$ with exact integer
    comparison and reports the margin in bits.
 6. For each prime $q \mid F$, finds a BLS witness $a$ satisfying
    $a^{N-1} \equiv 1 \pmod N$ and $\gcd(a^{(N-1)/q} - 1, N) = 1$.
@@ -77,7 +77,7 @@ untrusted input. It:
 * rebuilds $F$ as $\prod q^{v_q(N-1)}$ from the prime list directly —
   so a certificate that substitutes bogus factors would fail to
   reconstruct the claimed $F$;
-* verifies $\gcd(F, R) = 1$ and $2 F^3 > N$, and re-checks the exact
+* verifies $\gcd(F, R) = 1$ and $F^3 > N$, and re-checks the exact
   margin in bits;
 * re-runs the BLS witness check for each $q$;
 * reruns the finite-divisor discriminant computation and compares to
@@ -103,9 +103,9 @@ reference                 BLS75 citation
 factored_part             { bits, digits, num_primes }
 unfactored_part           { bits, digits }
 bls_hypothesis            {
-  statement               "2 * F^3 > N",
+  statement               "F^3 > N",
   satisfied               bool,
-  exact_margin_bits       int = (2 F^3).bit_length() - N.bit_length(),
+  exact_margin_bits       int = (F^3).bit_length() - N.bit_length(),
   definition              string
 }
 discriminant_sign         "negative" | "non-square" | "square-..."
@@ -124,7 +124,7 @@ software                  { python, sympy, pari_gp, note }
 ## What is *not* shipped
 
 * Factor tables in bulk. Only the specific primes needed to reach
-  $2 F^3 > N$ for each exponent are baked into the driver source.
+  $F^3 > N$ for each exponent are baked into the driver source.
 * The full Cunningham-project archive. A driver may reference a
   particular Cunningham result as a literal; the full reference list
   is in the manuscript.

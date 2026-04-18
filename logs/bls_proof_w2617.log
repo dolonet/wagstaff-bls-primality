@@ -7,7 +7,7 @@ N+1 = 4 * W_2615
 Step 0a: Chua's Condition (II): omega_3^((N+1)/2) ≡ -1 (mod N)
 ============================================================
   exponent bits:  2615
-  elapsed:        0.16s
+  elapsed:        0.15s
   residual a = 0: True
   residual b = 0: True
   Condition (II) verified: True
@@ -64,36 +64,36 @@ Total distinct primes in factored part: 22
 Step 3a: APR-CL primality proof for 22 primes of F
 ============================================================
 APR-CL certifying 22 primes (PARI/GP /usr/bin/gp)
-  q (  1d): APR-CL PRIME  [  0.005s]
-  q (  1d): APR-CL PRIME  [  0.005s]
+  q (  1d): APR-CL PRIME  [  0.006s]
+  q (  1d): APR-CL PRIME  [  0.006s]
   q (  1d): APR-CL PRIME  [  0.004s]
-  q (  1d): APR-CL PRIME  [  0.004s]
-  q (  2d): APR-CL PRIME  [  0.006s]
+  q (  1d): APR-CL PRIME  [  0.006s]
   q (  2d): APR-CL PRIME  [  0.005s]
-  q (  3d): APR-CL PRIME  [  0.006s]
+  q (  2d): APR-CL PRIME  [  0.005s]
+  q (  3d): APR-CL PRIME  [  0.005s]
   q (  4d): APR-CL PRIME  [  0.005s]
-  q (  6d): APR-CL PRIME  [  0.006s]
+  q (  6d): APR-CL PRIME  [  0.005s]
   q (  9d): APR-CL PRIME  [  0.006s]
-  q (  9d): APR-CL PRIME  [  0.006s]
-  q (  9d): APR-CL PRIME  [  0.006s]
+  q (  9d): APR-CL PRIME  [  0.005s]
+  q (  9d): APR-CL PRIME  [  0.005s]
   q ( 10d): APR-CL PRIME  [  0.005s]
   q ( 14d): APR-CL PRIME  [  0.006s]
-  q ( 19d): APR-CL PRIME  [  0.006s]
+  q ( 19d): APR-CL PRIME  [  0.007s]
   q ( 20d): APR-CL PRIME  [  0.006s]
   q ( 21d): APR-CL PRIME  [  0.006s]
   q ( 23d): APR-CL PRIME  [  0.006s]
-  q ( 23d): APR-CL PRIME  [  0.007s]
+  q ( 23d): APR-CL PRIME  [  0.006s]
   q ( 24d): APR-CL PRIME  [  0.007s]
-  q ( 25d): APR-CL PRIME  [  0.007s]
+  q ( 25d): APR-CL PRIME  [  0.006s]
   q ( 50d): APR-CL PRIME  [  0.009s]
 All 22 factors certified by APR-CL.  Total: 0.13s
 
 F has 268 digits (888 bits)
 N has 788 digits (2616 bits)
-2*F^3 has 2663 bits
-Exact margin: (2*F^3).bit_length() - N.bit_length() = 47 bits
+F^3 has 2662 bits
+Exact margin: (F^3).bit_length() - N.bit_length() = 46 bits
 
-*** BLS Theorem 5 CHECK: 2*F^3 > N  ==>  PASSED  (margin 47 bits) ***
+*** BLS Theorem 5 CHECK: F^3 > N  ==>  PASSED  (margin 46 bits) ***
 
 ============================================================
 Step 4: BLS witnesses for each prime q | F
@@ -145,7 +145,7 @@ Step 6: Generating JSON certificate
 Certificate written to /home/alexey/claude/primes/papers/wagstaff_bls_primality/release/data/bls_certificate_w2617.json
   Result: PRIME
   Factored part: 888 bits (268 digits), 22 primes
-  Exact margin: 47 bits ((2*F^3).bit_length() - N.bit_length())
+  Exact margin: 46 bits ((F^3).bit_length() - N.bit_length())
   Discriminant: non-square
 
 ============================================================

@@ -165,7 +165,10 @@ for d in divs:
 section("Step 2: Factoring cyclotomic values")
 
 # All known factorizations.
-# Sources: factordb.com, Cunningham project, direct computation.
+# Sources: FactorDB and the Cunningham project tables (see provenance
+# mapping below).  Every factor is re-certified prime by APR-CL (PARI/GP
+# isprime(x, 2)) before entering F, so the certificate does not depend
+# on the archives' correctness.
 known_factors = {
     # d: [list of prime factors]
     # Phi_590(2) = 71 digits — PRIME (handled separately)
@@ -200,6 +203,20 @@ known_factors = {
            1120555975329453797460758793161622336521020113400670993101603640935259508257738747978899],
 }
 
+# Per-d provenance labels for known_factors.  These are the original
+# sources from which each literal factorization was first obtained
+# during development; the literals were then independently re-certified
+# by APR-CL.  See "factor_provenance" in the output certificate.
+known_factors_source = {
+    295: "factordb",
+    826: "cunningham",
+    885: "cunningham",
+    1239: "cunningham",
+    1770: "cunningham",
+    2065: "factordb",      # small-prime entries 12391, 161071, 107429561 via FactorDB
+    2478: "cunningham",
+}
+
 # Cyclotomic values we skip factoring — not needed to reach BLS threshold.
 # Phi_413(2) is 105 digits; partial factoring found 2006647231 but the
 # 96-digit cofactor is composite and we already have +900 bit margin without it.
@@ -207,6 +224,7 @@ known_factors = {
 skip_factoring = {413, 4130, 6195, 12390}
 
 all_prime_factors = {}
+provenance_map = {}   # prime -> provenance label
 
 for d in divs:
     val = phi_values[d]
@@ -221,15 +239,19 @@ for d in divs:
         log(f"  Phi_{d:>5d}(2) [{digits:>4d}d]: SKIPPED (not needed for BLS threshold)")
         continue
 
+    computed_cofactor = None  # set when we compute a residual cofactor ourselves
+
     if d == 590:
         # Phi_590(2) is itself prime
         assert fast_isprime(val), "Phi_590(2) is not prime!"
         factors = {val: 1}
         source = "prime"
+        per_prime_source = {val: "cyclotomic_prime"}
     elif d in known_factors and known_factors[d][0] is not None:
         factor_list = known_factors[d]
         factors = {}
         check = 1
+        base_source = known_factors_source.get(d, "cunningham")
 
         if d == 2065:
             # Compute the 371-digit cofactor
@@ -239,8 +261,10 @@ for d in divs:
                     remaining //= f
             assert fast_isprime(remaining), "Phi_2065 cofactor not prime!"
             factor_list = factor_list + [remaining]
+            computed_cofactor = remaining
             log(f"    Phi_2065 cofactor ({len(str(remaining))}d): verified prime")
 
+        per_prime_source = {}
         for f in factor_list:
             assert fast_isprime(f), f"Factor {f} is NOT prime!"
             assert val % f == 0, f"Factor {f} does not divide Phi_{d}(2)!"
@@ -251,20 +275,27 @@ for d in divs:
                 e += 1
             factors[f] = e
             check *= f**e
+            if f == computed_cofactor:
+                per_prime_source[f] = "residual_prime_aprcl"
+            else:
+                per_prime_source[f] = base_source
         assert check == val, f"Factorization of Phi_{d}(2) incomplete!"
-        source = "Cunningham/factordb"
+        source = base_source
     elif digits <= 80:
         factors = factorint(val)
         source = "sympy"
+        per_prime_source = {f: "direct_sympy" for f in factors}
     else:
         # Try trial division for medium ones, then sympy
         factors = factorint(val)
         source = "sympy"
+        per_prime_source = {f: "direct_sympy" for f in factors}
 
     dt = time.time() - t0
 
     for pr, exp in factors.items():
         all_prime_factors[pr] = all_prime_factors.get(pr, 0) + exp
+        provenance_map.setdefault(pr, per_prime_source.get(pr, "unknown"))
 
     factored_product = 1
     for pr, exp in factors.items():
@@ -280,6 +311,7 @@ for d in divs:
 section("Step 3: Computing factored part F of N-1")
 
 all_prime_factors[2] = all_prime_factors.get(2, 0) + 1
+provenance_map[2] = "algebraic"
 assert all_prime_factors.get(3, 0) >= 2
 all_prime_factors[3] -= 1
 if all_prime_factors[3] == 0:
@@ -318,17 +350,17 @@ F_digits = len(str(F))
 R_bits = R.bit_length()
 R_digits = len(str(R))
 
-# BLS Theorem 5 check: 2*F^3 > N  (exact integer comparison).
-two_F_cubed = 2 * F**3
+# BLS Theorem 5 check: F^3 > N  (exact integer comparison).
+F_cubed = F**3
 exact_margin = exact_bls_margin_bits(F, N)
-assert two_F_cubed > N, "BLS Theorem 5 hypothesis 2*F^3 > N FAILED"
+assert F_cubed > N, "BLS Theorem 5 hypothesis F^3 > N FAILED"
 
 log(f"\nF has {F_digits} digits ({F_bits} bits)")
 log(f"R = (N-1)/F has {R_digits} digits ({R_bits} bits)")
 log(f"N has {N_digits} digits ({N_bits} bits)")
-log(f"2*F^3 has {two_F_cubed.bit_length()} bits")
-log(f"Exact margin: (2*F^3).bit_length() - N.bit_length() = {exact_margin} bits")
-log(f"\n*** BLS Theorem 5 CHECK: 2*F^3 > N  ==>  PASSED  (margin {exact_margin} bits) ***")
+log(f"F^3 has {F_cubed.bit_length()} bits")
+log(f"Exact margin: (F^3).bit_length() - N.bit_length() = {exact_margin} bits")
+log(f"\n*** BLS Theorem 5 CHECK: F^3 > N  ==>  PASSED  (margin {exact_margin} bits) ***")
 
 # ============================================================
 # Step 4: BLS witnesses
@@ -463,7 +495,7 @@ log(f"Result:           {RESULT}")
 log(f"")
 log(f"Factored part F:  {F_digits} digits ({F_bits} bits)")
 log(f"Unfactored R:     {R_digits} digits ({R_bits} bits)")
-log(f"Exact margin:     (2*F^3).bit_length() - N.bit_length() = {exact_margin} bits")
+log(f"Exact margin:     (F^3).bit_length() - N.bit_length() = {exact_margin} bits")
 log(f"")
 log(f"Cyclotomic decomposition: 2^{pm1} - 1 = prod_{{d|{pm1}}} Phi_d(2)")
 log(f"  {pm1} = 2 * 3 * 5 * 7 * 59 ({len(divs)} divisors)")
@@ -497,10 +529,10 @@ cert = {
         "digits": R_digits,
     },
     "bls_hypothesis": {
-        "statement": "2 * F^3 > N",
-        "satisfied": bool(two_F_cubed > N),
+        "statement": "F^3 > N",
+        "satisfied": bool(F_cubed > N),
         "exact_margin_bits": exact_margin,
-        "definition": "exact_margin_bits = (2*F^3).bit_length() - N.bit_length()"
+        "definition": "exact_margin_bits = (F^3).bit_length() - N.bit_length()"
     },
     "discriminant_sign": DISC_STATUS,
     "cyclotomic_decomposition": {
@@ -509,6 +541,15 @@ cert = {
         "num_divisors": len(divs),
     },
     "witnesses": {str(q): a for q, a in sorted(witnesses.items())},
+    "factor_provenance": {str(q): provenance_map.get(q, "unknown") for q in sorted(prime_pool.keys())},
+    "provenance_legend": {
+        "algebraic": "contribution from the form N-1 = 2 (2^{p-1}-1)/3 (the factor 2)",
+        "cunningham": "factor from the Cunningham project table for 2^n-1",
+        "factordb": "factor obtained by FactorDB lookup (used as a discovery aid; re-certified prime by APR-CL before entering F)",
+        "cyclotomic_prime": "Phi_d(2) is itself prime (no further factoring needed)",
+        "residual_prime_aprcl": "residual cofactor of Phi_d(2) after removing known factors; verified prime by APR-CL before entering F",
+        "direct_sympy": "produced by sympy.factorint on a cyclotomic value Phi_d(2)"
+    },
     "aprcl_certification": {
         "tool": "PARI/GP isprime(x, 2)",
         "scope": "every prime of F (uniform, no size threshold)",

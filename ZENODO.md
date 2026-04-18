@@ -17,7 +17,7 @@ Zenodo deposit whose metadata is read from `.zenodo.json`; you click
 
 ## Publishing a release
 
-1. On GitHub, create a tag and release, e.g. `v1.5.0`, with release
+1. On GitHub, create a tag and release, e.g. `v1.0.0`, with release
    notes describing the deposit.
 2. GitHub sends a webhook to Zenodo; Zenodo creates a draft deposit,
    fetches `.zenodo.json`, and attaches the tarball of the tagged
@@ -31,7 +31,7 @@ Zenodo deposit whose metadata is read from `.zenodo.json`; you click
 
 After the first publication, paste the resulting DOI into:
 
-* `paper/wagstaff_bls_primality_v1.5.tex` --- replace "DOI forthcoming
+* `paper/wagstaff_bls_primality.tex` --- replace "DOI forthcoming
   upon publication" in Section 5.2 with `\url{https://doi.org/10.5281/zenodo.XXXXXXX}`.
 * `README.md` --- add a "Citation" badge / link.
 * `CITATION.cff` --- bump `date-released` and add an `identifiers`

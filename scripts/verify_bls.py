@@ -165,15 +165,15 @@ def main() -> int:
         die(f"R bits mismatch: cert={cert['unfactored_part']['bits']}, recomputed={R_bits}")
 
     # ------------------------------------------------------------------
-    # Step 4: BLS Theorem 5 hypothesis 2 F^3 > N with exact margin
+    # Step 4: BLS Theorem 5 hypothesis F^3 > N with exact margin
     # ------------------------------------------------------------------
-    print(f"\n[4] BLS Theorem 5 hypothesis 2 F^3 > N")
-    F3_twice = 2 * F**3
-    if F3_twice <= N:
-        die(f"2 F^3 <= N — BLS Theorem 5 hypothesis violated")
+    print(f"\n[4] BLS Theorem 5 hypothesis F^3 > N")
+    F_cubed = F**3
+    if F_cubed <= N:
+        die(f"F^3 <= N — BLS Theorem 5 hypothesis violated")
     margin = exact_bls_margin_bits(F, N)
-    print(f"    2 F^3 has {F3_twice.bit_length()} bits; N has {n_bits} bits")
-    print(f"    exact margin = (2 F^3).bit_length() - N.bit_length() = {margin} bits")
+    print(f"    F^3 has {F_cubed.bit_length()} bits; N has {n_bits} bits")
+    print(f"    exact margin = (F^3).bit_length() - N.bit_length() = {margin} bits")
     claimed_margin = cert["bls_hypothesis"]["exact_margin_bits"]
     if margin != claimed_margin:
         die(f"margin mismatch: cert={claimed_margin}, recomputed={margin}")

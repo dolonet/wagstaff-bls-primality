@@ -208,6 +208,7 @@ cunningham_factors = {
 }
 
 all_prime_factors = {}  # prime -> total exponent across all Phi_d(2)
+provenance_map = {}     # prime -> provenance label
 
 log(f"\nFactoring each Phi_d(2)...")
 
@@ -237,10 +238,12 @@ for d in divs_10500:
             check *= f**e
         assert check == val, f"Cunningham factorization of Phi_{d}(2) is INCOMPLETE!"
         source = "Cunningham"
+        prov_label = "cunningham"
     elif digits <= 80:
         # Factor with sympy
         factors = factorint(val)
         source = "sympy"
+        prov_label = "direct_sympy"
     else:
         # Try trial division with known form r ≡ 1 (mod d)
         factors = {}
@@ -259,11 +262,13 @@ for d in divs_10500:
             factors[remaining] = 1
             remaining = 1
         source = "trial+ECM"
+        prov_label = "trial_div_cyclotomic"
 
     dt = time.time() - t0
 
     for pr, exp in factors.items():
         all_prime_factors[pr] = all_prime_factors.get(pr, 0) + exp
+        provenance_map.setdefault(pr, prov_label)
 
     factored_product = 1
     for pr, exp in factors.items():
@@ -289,6 +294,7 @@ section("Step 3: Computing factored part F of N-1")
 # N-1 = 2 * (2^10500 - 1) / 3
 # Add factor of 2 from the leading 2
 all_prime_factors[2] = all_prime_factors.get(2, 0) + 1
+provenance_map[2] = "algebraic"
 
 # Subtract one factor of 3 (dividing by 3)
 assert all_prime_factors.get(3, 0) >= 2, f"Expected 3^2+ in product, got 3^{all_prime_factors.get(3, 0)}"
@@ -337,17 +343,17 @@ F_digits = len(str(F))
 R_bits = R.bit_length()
 R_digits = len(str(R))
 
-# BLS Theorem 5 check: 2*F^3 > N  (exact integer comparison).
-two_F_cubed = 2 * F**3
+# BLS Theorem 5 check: F^3 > N  (exact integer comparison).
+F_cubed = F**3
 exact_margin = exact_bls_margin_bits(F, N)
-assert two_F_cubed > N, "BLS Theorem 5 hypothesis 2*F^3 > N FAILED"
+assert F_cubed > N, "BLS Theorem 5 hypothesis F^3 > N FAILED"
 
 log(f"\nF has {F_digits} digits ({F_bits} bits)")
 log(f"R = (N-1)/F has {R_digits} digits ({R_bits} bits)")
 log(f"N has {N_digits} digits ({N_bits} bits)")
-log(f"2*F^3 has {two_F_cubed.bit_length()} bits")
-log(f"Exact margin: (2*F^3).bit_length() - N.bit_length() = {exact_margin} bits")
-log(f"\n*** BLS Theorem 5 CHECK: 2*F^3 > N  ==>  PASSED  (margin {exact_margin} bits) ***")
+log(f"F^3 has {F_cubed.bit_length()} bits")
+log(f"Exact margin: (F^3).bit_length() - N.bit_length() = {exact_margin} bits")
+log(f"\n*** BLS Theorem 5 CHECK: F^3 > N  ==>  PASSED  (margin {exact_margin} bits) ***")
 
 # ============================================================
 # Step 4: Find BLS witnesses
@@ -494,7 +500,7 @@ log(f"Result:           {RESULT}")
 log(f"")
 log(f"Factored part F:  {F_digits} digits ({F_bits} bits)")
 log(f"Unfactored R:     {R_digits} digits ({R_bits} bits)")
-log(f"Exact margin:     (2*F^3).bit_length() - N.bit_length() = {exact_margin} bits")
+log(f"Exact margin:     (F^3).bit_length() - N.bit_length() = {exact_margin} bits")
 log(f"Discriminant:     {'< 0' if disc < 0 else 'not a perfect square' if disc >= 0 else '???'}")
 log(f"")
 log(f"Cyclotomic decomposition: 2^{pm1} - 1 = prod_{{d|{pm1}}} Phi_d(2)")
@@ -532,10 +538,10 @@ cert = {
         "digits": R_digits,
     },
     "bls_hypothesis": {
-        "statement": "2 * F^3 > N",
-        "satisfied": bool(two_F_cubed > N),
+        "statement": "F^3 > N",
+        "satisfied": bool(F_cubed > N),
         "exact_margin_bits": exact_margin,
-        "definition": "exact_margin_bits = (2*F^3).bit_length() - N.bit_length()"
+        "definition": "exact_margin_bits = (F^3).bit_length() - N.bit_length()"
     },
     "discriminant_sign": "negative" if disc < 0 else "non-square" if disc >= 0 else "unknown",
     "cyclotomic_decomposition": {
@@ -545,6 +551,13 @@ cert = {
         "cunningham_factors_used": sorted(cunningham_factors.keys()),
     },
     "witnesses": {str(q): a for q, a in sorted(witnesses.items())},
+    "factor_provenance": {str(q): provenance_map.get(q, "unknown") for q in sorted(prime_pool.keys())},
+    "provenance_legend": {
+        "algebraic": "contribution from the form N-1 = 2 (2^{p-1}-1)/3 (the factor 2)",
+        "cunningham": "factor from the Cunningham project table for 2^n-1; also verifiable via FactorDB",
+        "direct_sympy": "produced by sympy.factorint on a cyclotomic value Phi_d(2)",
+        "trial_div_cyclotomic": "discovered by trial division over the arithmetic progression r = k d + 1"
+    },
     "aprcl_certification": {
         "tool": "PARI/GP isprime(x, 2)",
         "scope": "every prime of F (uniform, no size threshold)",

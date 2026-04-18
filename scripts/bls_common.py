@@ -5,7 +5,7 @@ Exports:
     aprcl_prove_prime(n)             -- single-prime APR-CL proof via PARI/GP
     aprcl_prove_all(primes)          -- APR-CL proof for every prime in a list
     verify_condition_ii(N)           -- check omega_3^((N+1)/2) == -1 (mod N)
-    exact_bls_margin_bits(F, N)      -- integer bits by which 2F^3 exceeds N
+    exact_bls_margin_bits(F, N)      -- integer bits by which F^3 exceeds N
     require_gp()                     -- resolve path to `gp`; error if absent
 
 PARI/GP is required for the certificate to be unconditional; we invoke
@@ -125,13 +125,13 @@ def verify_condition_ii(N: int) -> dict:
 
 
 def exact_bls_margin_bits(F: int, N: int) -> int:
-    """Integer bits by which 2F^3 exceeds N.  Positive iff 2F^3 > N.
+    """Integer bits by which F^3 exceeds N.  Positive iff F^3 > N.
 
-    The BLS Theorem 5 hypothesis is 2F^3 > N with gcd(F, R) = 1, where
-    N - 1 = F R.  This returns (2F^3).bit_length() - N.bit_length(),
+    The BLS Theorem 5 hypothesis is F^3 > N with gcd(F, R) = 1, where
+    N - 1 = F R.  This returns (F^3).bit_length() - N.bit_length(),
     which is the exact integer margin; earlier dev scripts reported
     F.bit_length() - N.bit_length()//3 - 1 as an approximation."""
-    return (2 * F ** 3).bit_length() - N.bit_length()
+    return (F ** 3).bit_length() - N.bit_length()
 
 
 __all__ = [
