@@ -11,7 +11,7 @@ authors:
     given-names: Alexey
     email: science@dolotov.com
     orcid: "https://orcid.org/0009-0003-9481-5808"
-date-released: "2026-04-18"
+date-released: "2026-04-28"
 license: MIT
 repository-code: "https://github.com/dolonet/wagstaff-bls-primality"
 identifiers:
@@ -21,6 +21,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.19645441"
     description: "Version 2.0.0"
+  - type: doi
+    value: "10.5281/zenodo.19645478"
+    description: "Version 2.0.1"
 keywords:
   - Wagstaff numbers
   - primality testing
